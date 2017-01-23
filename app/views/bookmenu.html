@@ -1,0 +1,46 @@
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10">
+               <ul class="breadcrumb">
+                   <li><a href="index.html">Home</a></li>
+                   <li class="active">Books</li>
+               </ul>
+            </div>
+            <div class="col-xs-10">
+               <h3>Books</h3>
+               <hr>
+            </div>
+        </div>
+        <div class="row row-content">
+            <div class="col-xs-8" ng-if="!showMenu">
+                <h3>{{message}}</h3>
+            </div>
+            <div class="col-xs-8" ng-if="showMenu">
+                 <button ng-click="toggleDetails()" class="btn btn-xs btn-primary pull-right"
+                    type="button">
+                    {{showDetails ? 'Hide Details':'Show Details'}}
+                </button>
+               <ul class="media-list">
+                <li class="media" ng-repeat="book in books">
+                    <div class="media">
+                    <div class="media-left media-middle">
+                        <a ui-sref="app.bookdetails({id: book.id})">
+                        <img class="media-object img-thumbnail img-overlay" 
+                        ng-src={{book.image}} alt="">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{book.name}}<br><small> {{book.author}}</small></h2>
+                        <h4>Rating: {{book.rating}}</h4>
+                        <h5>{{book.category}}</h5>
+                        <p><a class="btn btn-lg btn-success" href="{{book.url}}"target="_blank" role="button">Amazon</a></p>
+                         <p ng-show="showDetails">{{book.description}}</p>
+                    </div>
+                </div>
+                 <hr>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </div>

@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head 
          content must come *after* these tags -->
     
-    <title>Ristorante Con Fusion</title>    
+    <title>Hot Free Books</title>    
         <!-- Bootstrap -->
 <!-- build:css styles/main.css -->
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -40,7 +40,16 @@
     
        
     <div class="container">
-        <div ui-view></div>
+         <div ui-view="header"></div>
+    <div ui-view="jumbotron"></div>
+       <div class="row">
+          <div class="col-sm-3">
+            <div ui-view="sidebar"></div>
+          </div>
+          <div class="col-sm-8 col-sm-pull-1">
+            <div ui-view="content"></div>
+          </div>          
+       </div>
      
 
         
@@ -59,8 +68,10 @@
      <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--script src="scripts/controllers/controllers.js"></script>
     <script src="scripts/services/lb-services.js"></script>
+    <script src="scripts/services/auth.js"></script>
+    <!--script src="scripts/controllers/controllers.js"></script>
+    
     <script src="scripts/services/auth.js"></script>
 < endbuild -->
 

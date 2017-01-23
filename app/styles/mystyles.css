@@ -23,12 +23,7 @@ body {
 .navbar-toggle .icon-bar {
     background-color: #F7786B;
   }
-/*.navbar-fixed-top .nav > li >a:hover,
-.navbar-fixed-top .nav > li >a:focus {
-    background-color: #F7786B;
-    color: white;
-}
-*/
+
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover  {
   color: white;
@@ -53,43 +48,6 @@ body {
 }
 
 
-/*.butt > hover, {
-  color: white;
-  background-color: #F7786B;
-  background-image: linear-gradient(to bottom,#f7786b 0,#f7786b 100%);
-
-}
-*/
-.xs-collapse {
-  display: none;
-  visibility: hidden;
-}
-
-.xs-toggle .icon-bar {
-  display: block;
-  width: 22px;
-  height: 2px;
-  border-radius: 1px;
-}
-.xs-toggle .icon-bar + .icon-bar {
-  margin-top: 4px;
-}
-
-.btn-default.xs-toggle .icon-bar {
-  background-color: #888;
-}
-
-@media (min-width: 769px) {
-  .xs-toggle {
-    display: none;
-    visibility: hidden;
-  }
-  .xs-collapse {
-    display: block;
-    visibility: visible;
-  }
-}
-
 
 /* Custom page header */
 .header {
@@ -113,19 +71,8 @@ body {
   border-top: 1px solid #e5e5e5;
 }
 
-/* Customize container */
-/*@media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-    line-height: 40px;
-    border-bottom: 1px solid #e5e5e5;
-  }
-}*/
-/*.container-narrow > hr {
-  margin: 30px 0;
-}*/
 
-/* Main marketing message and sign up button */
+/* Making picture darker to write on it */
 .jumbotron {
   text-align: center;
   color: white;
@@ -144,58 +91,56 @@ body {
   font-size: 21px;
 }
 
-/*.lead  {
-  background-color: #eaece3;
+/*Second Jumbotron*/
+.jabout {
+  text-align: center;
+  color: white;
+  
+  border-bottom: 1px solid #e5e5e5;
+  background:
+  linear-gradient(
+      rgba(0, 0, 0, 0.2),
+      rgba(0, 0, 0, 0.2)
+    ), url(../images/GRM-Blog-JUL16-AboutUs.jpg);
+  background-size: cover;
+  height: 341px;
+
 }
-*/
-/*.nav-sidebar { 
-    width: 100%;
-    padding: 8px 0; 
-    border-right: 1px solid #ddd;
+.jabout .btn {
+  padding: 14px 24px;
+  font-size: 21px;
+}
+.jabooks {
+  text-align: center;
+  color: white;
+  
+  border-bottom: 1px solid #e5e5e5;
+  background:
+  linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ), url(../images/books.jpg);
+  background-size: cover;
+  height: 341px;
+
+
+
+
+}
+.img-overlay {
+    height: 300px;
+    width: 200px;
+   
 }
 
-.nav-sidebar h4 {
-
-  font-size: 20px
-  border: solid 1px #cccccc;
--webkit-border-radius: 5px;
--moz-border-radius: 5px;
-
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-border-radius: 1px;
-}
-*/
-
-
-
+/*Sidebar Styling*/
 #navigation {
-
 width:150px;
 padding: 8px;
-
 }
 
 #navigation ul {margin:0px; padding:0px;
-    width: 500px;
+    width: 200px;
 }
 #navigation li {list-style: none;
 
@@ -207,9 +152,6 @@ ul.top-level li {
 margin: 0 0 3px 0;
 
 }
-
-
-    
 
 #navigation a {
     color: #6D6D6D;
@@ -245,6 +187,14 @@ position: relative;
   font-weight: 600;
 }
 
+.headhome {
+  font-size: 30px;
+  color: #F7786B;
+  padding-bottom: 20px;
+  font-style: italic;
+
+}
+
 .row-footer {
 
   margin: 0px auto;
@@ -273,17 +223,11 @@ position: relative;
   margin-top: 25px;
 }
 
-/* Right-aligned sidebar 
-.nav-sidebar.pull-right { 
-    border-right: 0; 
-    border-left: 1px solid #ddd;
-    #222 
+.catname{
+  color: #F7786B;
+  padding-left: 300px;
 }
-.nav-sidebar.pull-right a {
-    -webkit-border-radius: 0 4px 4px 0; 
-    -moz-border-radius: 0 4px 4px 0; 
-    border-radius: 0 4px 4px 0; 
-}*/
+
 
 /* Supporting marketing content */
 .marketing {
@@ -329,31 +273,10 @@ body {
     font-stretch: initial;
 }  
 
-#navigation li {
-
-  list-style:none;
-
-
-}
-
-
-  }
-
+#navigation li {list-style:none;}
 
   
-    
-
-
-
-  /* Space out the masthead */
-  /*header {
-    margin-bottom: 30px;
-    style="
-    width: 550px;
-    height: 50px;
-  }*/
   /* Remove the bottom border on the jumbotron for visual effect */
   .jumbotron {
     border-bottom: 0;
   }
-}

@@ -1,41 +1,121 @@
-var hotbookApp = angular.module('hotbookApp', ['ui.router']);
+var hotbookApp = angular.module('hotbookApp', ['ui.router','ngResource','lbServices','ngDialog']);
 
 hotbookApp.config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/');
         $stateProvider
         
-            // route for the home page
-            .state('home', {
+            // route for the home page'app'
+            .state('app', {
                     url:'/',
                     views: {
-                    '': { templateUrl: 'views/partial-home.html' },
-                    'header@home': {
+                    'header': {
                         templateUrl : 'views/header.html',
                         controller  : 'HeaderController'
                     },
-                    'jumbotron@home': {
+                    'jumbotron': {
                         templateUrl : 'views/jumbotron.html',
-                        controller  : 'scotchController'
+                        controller  : 'RegisterController'
+                        
                     },
-                    'sidebar@home': { 
+                    'sidebar': { 
                         templateUrl : 'views/sidebar.html',
-                        controller  : 'scotchController'
+                        controller  : 'SidebarController'
+                       
                     },
-                     'content@home': { 
-                        templateUrl: 'views/home.html',
-                        controller: 'scotchController'
+                     'content': { 
+                        templateUrl : 'views/home.html',
+                        controller  : 'HomeController'
                     },
                     'footer': {
                         templateUrl : 'views/footer.html',
                     }
-                    
+        
+            }
+        })
 
+ // route for the about page'app.about'
+
+            .state('app.about', {
+                    url:'about',
+                    views: {
+                    'jumbotron@': {
+                        templateUrl : 'views/jumbotron-about.html'
+                        
+                    },
+                    'sidebar@': {
+                    },
+                     'content@': { 
+                        templateUrl: 'views/about.html'
+                        
+                    }
                
             }
         })
-                /*views: {
-                     '': { templateUrl: 'index.html' },
+             .state('app.bookdetails', {
+                    url:'books/:id',
+                    views: {
+                    'jumbotron@': {
+                        templateUrl : 'views/jumbotron-about.html'
+                       
+                    },
+                     'content@': { 
+                        templateUrl: 'views/bookdetail.html',
+                        controller  : 'BooksDetailController'
+                        
+                    }
+          
+            }
+        })
+             .state('app.bookmenu', {
+                    url:'booksmenu/',
+                    views: {
+                    'jumbotron@': {
+                        templateUrl : 'views/jumbotron-books.html'
+                  
+                    },
+                     'content@': { 
+                        templateUrl: 'views/bookmenu.html',
+                        controller  : 'BooksMenuController'
+                        
+                    }
+          
+            }
+        })
+
+             .state('app.categorymenu', {
+                    url:'books/:id/',
+                    views: {
+                    'jumbotron@': {
+                        templateUrl : 'views/jumbotron-books.html'
+                    
+                    },
+                     'content@': { 
+                        templateUrl: 'views/categorymenu.html',
+                        controller  : 'CategoryController'
+                        
+                    }
+      
+               
+            }
+        })
+              .state('app.contact', {
+                    url:'contact',
+                    views: {
+                    'jumbotron@': {
+                    },
+                     'content@': { 
+                        templateUrl: 'views/contact.html',
+                        controller  : 'ContactController'
+                        
+                    }
+               
+            }
+        })
+
+
+      /*views: {
+                     '': { templateUrl: 'index.html' },controller  : 'ContactController'
                      'sidebar@app': { 
                         templateUrl : 'views/jumbotron.html',
                         controller  : 'scotchController'
@@ -65,32 +145,167 @@ hotbookApp.config(function($stateProvider, $urlRouterProvider) {
 
 
 
+hotbookApp.controller('ContactController', ['$scope', function ($scope) {
+
+    $scope.feedback = {
+        mychannel: "",
+        firstName: "",
+        lastName: "",
+        agree: false,
+        email: ""
+    };
+
+    var channels = [{
+        value: "tel",
+        label: "Tel."
+    }, {
+        value: "Email",
+        label: "Email"
+    }];
+
+    $scope.channels = channels;
+    $scope.invalidChannelSelection = false;
+
+    $scope.sendFeedback = function () {
 
 
-    hotbookApp.controller('scotchController', function($scope) {
-    
-    $scope.message = 'test';
-   
-    $scope.scotches = [
-        {
-            name: 'Macallan 12',
-            price: 50
-        },
-        {
-            name: 'Chivas Regal Royal Salute',
-            price: 10000
-        },
-        {
-            name: 'Glenfiddich 1937',
-            price: 20000
+        if ($scope.feedback.agree && ($scope.feedback.mychannel == "")) {
+            $scope.invalidChannelSelection = true;
+        } else {
+            $scope.invalidChannelSelection = false;
+            // feedbackFactory.save($scope.feedback);
+            $scope.feedback = {
+                mychannel: "",
+                firstName: "",
+                lastName: "",
+                agree: false,
+                email: ""
+            };
+            $scope.feedback.mychannel = "";
+            $scope.feedbackForm.$setPristine();
         }
-    ];
+    };
+}])
+
+
+hotbookApp.controller('CategoryController', ['$scope', '$rootScope', 'Book', 'Category','$state', '$stateParams', function ($scope, $rootScope, Book, Category, $state, $stateParams) {
+    var books = {};
+    $scope.tab = 1;
+    $scope.filtText = '';
+    $scope.showDetails = false;
+   
+    $scope.showMenu = false;
+    $scope.message = "Loading ...";
+    var category = Category.findById({id: $stateParams.id})
+    .$promise.then(
+        function (response) {
+            $scope.categoryname = response.name;
+         
+        },
+        function (response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+
+
+
+  //Querying all books from the category 
+    Category.books({id: $stateParams.id})
+        .$promise.then(
+        function (response) {
+            $scope.books = response;
+            $scope.showMenu = true;
+           
+        },
+        function (response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+
+
+    $scope.toggleDetails = function () {
+        $scope.showDetails = !$scope.showDetails;
+    };
+   
+}])
+
+
+
+
+
+hotbookApp.controller('BooksMenuController', ['$scope', '$rootScope', 'Book', function ($scope, $rootScope, Book) {
+
+    $scope.tab = 1;
+    $scope.filtText = '';
+    $scope.showDetails = false;
+   
+    $scope.showMenu = false;
+    $scope.message = "Loading ...";
+
+    Book.find()
+        .$promise.then(
+        function (response) {
+            $scope.books = response;
+            $scope.showMenu = true;
+
+        },
+        function (response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+
+   
+
+
+    $scope.toggleDetails = function () {
+        $scope.showDetails = !$scope.showDetails;
+    };
+
+   
+}])
+
+
+
+ hotbookApp.controller('LoginController', ['$scope', 'ngDialog', '$localStorage', 'AuthService', function ($scope, ngDialog, $localStorage, AuthService) {
     
-});
+    $scope.loginData = $localStorage.getObject('userinfo','{}');
+    
+    $scope.doLogin = function() {
+        if($scope.rememberMe)
+           $localStorage.storeObject('userinfo',$scope.loginData);
 
-    hotbookApp.controller('HeaderController', ['$scope', '$state', '$rootScope', function ($scope, $state, $rootScope) {
+        AuthService.login($scope.loginData);
 
-    /*$scope.loggedIn = false;
+        ngDialog.close();
+
+    };
+            
+    $scope.openRegister = function () {
+        ngDialog.open({ template: 'views/register.html', scope: $scope, className: 'ngdialog-theme-default', controller:"RegisterController" });
+    };
+    
+}])
+
+    hotbookApp.controller('RegisterController', ['$scope', 'ngDialog', '$localStorage', 'AuthService', function ($scope, ngDialog, $localStorage, AuthService) {
+    
+    $scope.register={};
+    $scope.loginData={};
+    $scope.openRegister = function () {
+        ngDialog.open({ template: 'views/register.html', scope: $scope, className: 'ngdialog-theme-default', controller:"RegisterController" });
+    };
+    
+    $scope.doRegister = function() {
+
+        AuthService.register($scope.registration);
+        
+        ngDialog.close();
+
+    };
+}])
+
+
+
+
+    hotbookApp.controller('HeaderController', ['$scope', '$state', '$rootScope','ngDialog', 'AuthService', function ($scope, $state, $rootScope, ngDialog, AuthService) {
+
+    $scope.loggedIn = false;
     $scope.username = '';
     
     if(AuthService.isAuthenticated()) {
@@ -117,65 +332,111 @@ hotbookApp.config(function($stateProvider, $urlRouterProvider) {
         $scope.loggedIn = AuthService.isAuthenticated();
         $scope.username = AuthService.getUsername();
     });
-    */
+    
     $scope.stateis = function(curstate) {
        return $state.is(curstate);  
     };
     
 }])
-        
-      /*     // route for the aboutus page
-            .state('app.aboutus', {
-                url:'aboutus',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/aboutus.html',
-                        controller  : 'AboutController'                  
-                    }
-                }
-            })
-        
-            // route for the contactus page
-            .state('app.contactus', {
-                url:'contactus',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/contactus.html',
-                        controller  : 'ContactController'                  
-                    }
-                }
-            })
 
-            // route for the menu page
-            .state('app.menu', {
-                url: 'menu',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/menu.html',
-                        controller  : 'MenuController'
-                    }
-                }
-            })
+hotbookApp.controller('HomeController', ['$scope', 'Book', 'Author', function ($scope, Book, Author) {
+    $scope.showbestseller = false;
+    $scope.message = "Loading ...";
+    var bestsellers = Book.find({"filter":{"where":{
+            "featured": true
+        }}})
+        .$promise.then(
+            function (response) {
+                $scope.bestsellers = response;
+                $scope.showbestseller = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
+    var author = Author.findOne({"filter":{"where":{
+            "name": "Kat Ross"
+        }}})
+        .$promise.then(
+            function (response) {
+                $scope.author = response;
+                $scope.showbestseller = true;
+            },
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
+   
+}])
 
-            // route for the dishdetail page
-            .state('app.dishdetails', {
-                url: 'menu/:id',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/dishdetail.html',
-                        controller  : 'DishDetailController'
-                   }
-                }
-            })
+hotbookApp.controller('SidebarController', ['$scope', '$rootScope', 'Category', function ($scope, $rootScope, Category) {
+     
+    Category.find()
+        .$promise.then(
+        function (response) {
+            $scope.categories = response;
+            $scope.showMenu = true;
+
+        },
+        function (response) {
+            $scope.message = "Error: " + response.status + " " + response.statusText;
+        });
+    
+}])
+
+hotbookApp.controller('BooksDetailController', ['$scope', '$rootScope', '$state', '$stateParams', 'Book', 'Comment', function ($scope, $rootScope, $state, $stateParams, Book, Comment) {
+
+    $scope.book = {};
+    $scope.showbook = false;
+    $scope.message = "Loading ...";
+
+    $scope.book = Book.findById({id: $stateParams.id})
+        .$promise.then(
+            function (response) {
+                $scope.book = response;
+                $scope.showBook = true;
+            },
+                
+                
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
+
+    $scope.comments = Comment.find({bookId: $stateParams.id})
+        .$promise.then(
+            function (response) {
+                $scope.comments = response;
+            },
+               
+                
+            function (response) {
+                $scope.message = "Error: " + response.status + " " + response.statusText;
+            }
+        );
+
+
+    $scope.mycomment = {
+        rating: 5,
+        comment: "",
+        bookId: $stateParams.id,
+    };
+
+    $scope.submitComment = function () {
         
-            // route for the dishdetail page
-            .state('app.favorites', {
-                url: 'favorites',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/favorites.html',
-                        controller  : 'FavoriteController'
-                   }
-                }
-            });
-*/
+        if ($rootScope.currentUser)
+            $scope.mycomment.postedBy = $rootScope.currentUser.username;
+
+        Comment.create($scope.mycomment);
+
+        $state.go($state.current, {}, {reload: true});
+        
+        $scope.commentForm.$setPristine();
+
+        $scope.mycomment = {
+            rating: 5,
+            comment: "",
+            bookId: $stateParams.id,
+        };
+    }
+}])

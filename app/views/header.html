@@ -3,30 +3,32 @@
           <div class="container-fluid">
             <div class="navbar-header">
              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigationbar">
-       <span class="sr-only">Toggle navigation</span>
-       <span class="icon-bar"></span>
-       <span class="icon-bar"></span>
-       <span class="icon-bar"></span>
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html"><h3 class="text-muted">Super Books</h3></a>
-                <form class="navbar-form navbar-left">
+      <a class="navbar-brand" href="index.html"><h3 class="text-muted">Hot Free Books</h3></a>
+                <!--form class="navbar-form navbar-left">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search Book or Author">
         </div>
         <button type="submit" class="btn btn-default butt">Submit</button>
-          </form>
+          </form-->
               </div>
           <div class="collapse navbar-collapse" id="navigationbar">
-          <ul class="nav nav-pills red navbar-right">
-            <li ng-class="{active: stateis('home')}"><a ui-sref="home">Home</a></li>
-            <li ng-class="{active: stateis('about')}"><a ui-sref="about">About</a></li>
-            <li ng-class="{active: stateis('books')}"><a ui-sref="books">Books</a></li>
-            <li ng-class="{active: stateis('contact')}"><a ui-sref="contact">Contact</a></li>
-            <li ng-class="{active: stateis('login')}"><a ui-sref="login">Login</a></li>    
-          </ul>
-        </div>
-          
-          
-        </div>
-      </nav>
-</div>
+                <ul class="nav nav-pills red navbar-right">
+                  <li ng-class="{active: stateis('app')}"><a ui-sref="app">Home</a></li>
+                  <li ng-class="{active: stateis('app.about')}"><a ui-sref="app.about">About</a></li>
+                  <li ng-class="{active: stateis('app.bookmenu') || stateis('app.bookdetails')|| stateis('app.categorymenu') }"><a ui-sref="app.bookmenu">Books</a></li>
+                  <li ng-class="{active: stateis('app.contact')}"><a ui-sref="app.contact">Contact</a></li>
+                  <li ng-if="!loggedIn"><a ng-click="openLogin()">Login</a></li>
+                  <li ng-if="loggedIn"></li>
+                          <li ng-if="loggedIn">
+                          <a ng-click="logOut()">{{username}}
+                          <span class="glyphicon glyphicon-log-in"></span></a>    
+                        </ul>
+                      </div>
+                      </div>
+                    </nav>
+              </div>
