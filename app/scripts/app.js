@@ -1,6 +1,11 @@
 'use strict';
 
 angular.module('hotbookApp', ['ui.router','ngResource','lbServices','ngDialog'])
+.config(['$httpProvider', function($httpProvider) {
+      //  $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }
+])
 .config(function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise('/');
